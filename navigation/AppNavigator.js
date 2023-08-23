@@ -35,8 +35,6 @@ const AppNavigator = () => {
     },
   };
 
-  // const navigationContext = useContext(NavigationContext);
-
   const linking = {
     prefixes: [prefix], // Replace with your app's actual prefixes
     config,
