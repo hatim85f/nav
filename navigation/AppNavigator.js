@@ -4,58 +4,76 @@ import { NavigationContainer } from "@react-navigation/native";
 import { NavigationContext } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FullAppNavigator } from "./MainNavigator";
+import { MainDrawerNavigator } from "./DrawerMainNav";
+import * as Linking from "expo-linking";
+import { ActivityIndicator } from "react-native";
+import { Platform } from "react-native";
 
 const PERSISTENCE_KEY = "NAVIGATION_STATE_V1";
 
 const AppNavigator = () => {
+  const [isReady, setIsReady] = useState(false);
   const [initialState, setInitialState] = useState();
 
-  const navigationContext = useContext(NavigationContext);
+  const prefix = Linking.createURL("/");
+
+  // const navigationContext = useContext(NavigationContext);
   const linking = {
-    prefixes: [
-      "nav://",
-      "https://nav.com",
-      "https://nav/intro",
-      "https://nav/auth",
-      "https://nav/home",
-      "https://nav/profile",
-    ],
+    prefixes: [prefix],
     config: {
       screens: {
         Intro: "intro",
-        Login: "auth",
+        Home: "home",
         Profile: "profile",
-        Home: "",
       },
     },
   };
 
   useEffect(() => {
     const restoreState = async () => {
-      const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
-      const state = savedStateString ? JSON.parse(savedStateString) : undefined;
-      console.log(savedStateString);
-      if (state !== undefined) {
-        setInitialState(state);
+      try {
+        const initialUrl = await Linking.getInitialURL();
+
+        console.log(initialUrl);
+
+        if (Platform.OS !== "web" && initialUrl == null) {
+          // Only restore state if there's no deep link and we're not on web
+          const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
+          const state = savedStateString
+            ? JSON.parse(savedStateString)
+            : undefined;
+
+          if (state !== undefined) {
+            setInitialState(state);
+          }
+        }
+      } finally {
+        setIsReady(true);
       }
     };
 
-    restoreState();
-  }, []);
+    if (!isReady) {
+      restoreState();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
+  }
 
   console.log(initialState);
 
-  // if (!isReady) {
-  //   return <Loader />;
-  // }
+  if (!isReady) {
+    return <ActivityIndicator />;
+  }
 
   return (
     <NavigationContainer
-      linking={linking}
-      fallback={<Text>Loading...</Text>}
-      context={navigationContext}
       initialState={initialState}
-      onStateChange={(state) => setInitialState(state)}
+      onStateChange={(state) =>
+        AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
+      }
+      linking={linking}
     >
       <FullAppNavigator />
     </NavigationContainer>
