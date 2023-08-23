@@ -7,7 +7,7 @@ export const HomeNavigator = () => {
   return (
     <MainHome.Navigator screenOptions={{ headerShown: false }}>
       <MainHome.Screen
-        name="Home"
+        name="Dashboard"
         component={HomeScreen}
         options={{ title: "Home Screen" }}
       />

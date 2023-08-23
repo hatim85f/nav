@@ -4,7 +4,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 
 const MenuButton = (props) => {
-  console.log(props);
   return (
     <TouchableOpacity
       onPress={() => props.navigation.toggleDrawer()}

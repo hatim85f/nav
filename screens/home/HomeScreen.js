@@ -12,6 +12,8 @@ const HomeScreen = (props) => {
         This is Home Screen
       </Text>
       <Link to={{ screen: "Profile" }}> Go to Profile </Link>
+      <Link to={{ screen: "Feed" }}> Go to Feed </Link>
+      <Link to={{ screen: "Settings" }}> Go to Settings </Link>
       <Button
         title="Open Drawer"
         onPress={() => props.navigation.openDrawer()}

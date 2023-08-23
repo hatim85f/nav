@@ -11,7 +11,10 @@ const ProfileScreen = (props) => {
       <Text style={{ fontSize: 25, textAlign: "center", color: "blue" }}>
         This is Profile Screen
       </Text>
-      <Link to={{ screen: "Home" }}> Go to Home </Link>
+      <Link to={{ screen: "Dashboard" }}> Go to Home </Link>
+      <Link to={{ screen: "Feed" }}> Go to Feed </Link>
+      <Link to={{ screen: "Settings" }}> Go to Settings </Link>
+      <Link to={{ screen: "Intro" }}> Go to Settings </Link>
       <Button
         title="Open Drawer"
         onPress={() => props.navigation.openDrawer()}

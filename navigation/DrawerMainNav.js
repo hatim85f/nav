@@ -14,6 +14,10 @@ import {
 } from "@expo/vector-icons";
 import { HomeNavigator } from "./HomeNavigator";
 import { ProfileNavigator } from "./ProfileNavigator";
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "../screens/home/HomeScreen";
+import ProfileScreen from "../screens/profile/ProfileScreen";
+import ItemScreen from "../screens/ItemScreen";
 
 const MainDrawer = createDrawerNavigator();
 
@@ -60,8 +64,8 @@ export const MainDrawerNavigator = () => {
       }}
     >
       <MainDrawer.Screen
-        name="Dashboard"
-        component={HomeNavigator}
+        name="home_drawer"
+        component={HomeScreen}
         options={{
           drawerInactiveTintColor: "black",
           drawerActiveTintColor: "white",
@@ -78,7 +82,24 @@ export const MainDrawerNavigator = () => {
       />
       <MainDrawer.Screen
         name="Profile"
-        component={ProfileNavigator}
+        component={ProfileScreen}
+        options={{
+          drawerInactiveTintColor: "black",
+          drawerActiveTintColor: "white",
+          drawerIcon: ({ focused }) => {
+            return (
+              <MaterialCommunityIcons
+                name="view-dashboard-outline"
+                size={40}
+                color={focused ? "white" : "black"}
+              />
+            );
+          },
+        }}
+      />
+      <MainDrawer.Screen
+        name="Items"
+        component={ItemScreen}
         options={{
           drawerInactiveTintColor: "black",
           drawerActiveTintColor: "white",

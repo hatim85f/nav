@@ -15,24 +15,39 @@ const AppNavigator = () => {
   const [isReady, setIsReady] = useState(false);
   const [initialState, setInitialState] = useState();
 
-  const prefix = Linking.createURL("/");
+  const prefix = Linking.createURL("myapp://");
 
-  // const navigationContext = useContext(NavigationContext);
-  const linking = {
-    prefixes: [prefix],
-    config: {
-      screens: {
-        Intro: "intro",
-        Home: "home",
-        Profile: "profile",
+  const config = {
+    screens: {
+      Main: {
+        path: "main",
+        screens: {
+          Intro: "intro",
+          Drawer: {
+            path: "drawer",
+            screens: {
+              Home: "home",
+              Profile: "profile",
+            },
+          },
+        },
       },
     },
+  };
+
+  // const navigationContext = useContext(NavigationContext);
+
+  const linking = {
+    prefixes: [prefix], // Replace with your app's actual prefixes
+    config,
   };
 
   useEffect(() => {
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL();
+
+        console.log(initialUrl);
 
         if (Platform.OS !== "web" && initialUrl == null) {
           // Only restore state if there's no deep link and we're not on web
@@ -67,11 +82,12 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer
-      initialState={initialState}
-      onStateChange={(state) =>
-        AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
-      }
+      onStateChange={(state) => {
+        console.log(state);
+        AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state));
+      }}
       linking={linking}
+      initialState={initialState}
     >
       <FullAppNavigator />
     </NavigationContainer>

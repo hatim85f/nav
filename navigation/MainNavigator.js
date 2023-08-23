@@ -1,8 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import IntroScreen from "../screens/auth/IntroScreen";
 import { MainDrawerNavigator } from "./DrawerMainNav";
-import HomeScreen from "../screens/home/HomeScreen";
-import ProfileScreen from "../screens/profile/ProfileScreen";
 
 const MainNavigator = createStackNavigator();
 
@@ -16,13 +14,8 @@ export const FullAppNavigator = () => {
       />
       <MainNavigator.Screen
         name="Home"
-        component={HomeScreen}
+        component={MainDrawerNavigator}
         options={{ title: "Home" }}
-      />
-      <MainNavigator.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{ title: "Profile" }}
       />
     </MainNavigator.Navigator>
   );
